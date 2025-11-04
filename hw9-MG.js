@@ -153,18 +153,31 @@ var loadStatusTernary = (scriptLoadType === "deferred") ? "Non-blocking" : "Pote
 console.log("After: " + loadStatusTernary + "\n");
 
 // Set 4 ------------------------------------------------------------------------------
+// *IMPORTANT* Kindly note that excercises 17 and 20 require a reference to document, please use console on browser instance of index.html.
+//I have attached screenshots for proof of console outputs. 17 and 20 also have a unique condition to allow for running without reference errors in the vscode terminal, all while maintaining functionality in the browser.
 
 /***Exercise 16: Commenting and Code Structure**
-Define a function named `calculateRenderTime` (you don't need to define its body). Use proper indentation and a multi-line comment (`/* */`) to describe the function's purpose (e.g., calculating the time taken to parse HTML and execute JavaScript). Include a single-line comment inside the function body using `//`.*/
+Define a function named `calculateRenderTime` (you don't need to define its body). Use proper indentation and a multi-line comment (`/* */ //`) to describe the function's purpose (e.g., calculating the time taken to parse HTML and execute JavaScript). Include a single-line comment inside the function body using `//`.*/
 /*calculateRenderTime is meant to calculate the time needed to parse HTML and run javascript when a webpage is rendered*/
 function calculateRenderTime() {
     //Define function here to calculate the render time
 }
 console.log("Execercise 16 Output: No output. See comments.\n");
 
-/***Exercise 17: Date Object Formatting Challenge (MM/DD/YYYY)**
+/***Exercise 17: Date Object Formatting Challenge (MM/DD/YYYY)
 Complete the challenge described in the course materials. Create a new Date object. Using appropriate methods (assume basic knowledge of standard Date methods for year, month, day), extract the necessary components and use string concatenation to output the formatted string: "Today is MM/DD/YYYY". (Hint: Months are zero-indexed, so remember to add 1). Log the final formatted string to the console.*/
-console.log("Do 17 LATERRRRRRRRRRRRRRRRRRRR KENNNZZIIEEEE!\n");
+var date = new Date();
+/*alert("Today is " + date);
+console.log("Today is " + date);*/
+// Based on course modules, we need to put an element in a .html file to show the date in MM/DD/YYYY format.
+var month = date.getMonth() + 1;
+var day = date.getDate();
+var year = date.getFullYear();
+var dateFormatted = "Today is " + month + "/" + day + "/" + year;
+console.log("Excercise 17 Output: " + dateFormatted + "\n");
+if (typeof document !== "undefined") { //condition to prevent reference errors while preserving functionality in the browser
+    document.body.innerHTML = "<h1>" + dateFormatted + "</h1>";
+}
 
 /***Exercise 18: Mixed Type Arithmetic Explanation**
 Initialize `val1` to 20 (number) and `val2` to "5" (string). Calculate `sumResult = val1 + val2` and `diffResult = val1 - val2`. Log both results. In a multi-line comment, explain why the `sumResult` differs significantly from `diffResult`, referencing JavaScript's behavior with the `+` operator versus other arithmetic operators.*/
@@ -178,3 +191,29 @@ var diffResult = val1 - val2;
 console.log("Diff result is: " + diffResult + "\n");
 /*sumResult and diffResult differ by so much because of the behavior of '+' and '-'. In Javascript, '+' has another meaning with strings outside of being a mathematical
 operator. Here, it is being used as a string concatenator. The '-' operator only has a mathematical meaning and so 20-5 yeilds 15.*/
+
+/***Exercise 19: Conditional based on Type Check**
+Initialize a variable `dataInput` to the numeric value 484. Write an `if/else` statement. Use the `typeof` operator inside the condition to check if `dataInput` is strictly equal to the string "number". If it is, log "Input is numeric." If it is not, reassign `dataInput` to the boolean value `true`, and then log the new type using `typeof`.*/
+var dataInput = 484;
+if (typeof dataInput === "number") {
+    console.log("Excercise 19 Output: Input is numeric.\n");
+} else {
+    dataInput = true;
+    console.log("Excercise 19 Output: New type is: " + typeof dataInput + "\n");
+}
+
+/***Exercise 20: Simulating DOM Manipulation Timing Failure (Conceptual)**
+Write the standard JavaScript code sequence necessary to inject an `<h1>` element containing the text "Interactive Layer Loaded" into the document body.
+Crucially, precede this injection code with a multi-line comment explaining the timing issue that occurs if this script is placed in the HTML `<head>` _without_ the `defer` or `async` attributes, leading to the error "Cannot set property 'innerHTML' of null".*/
+/*The following code attempts to inject an h1 element within the body- a form of DOM manipulation. Adding attributes like defer and async have various effects on when this script gets run. 
+Scripts with defer are downloaded asynchonously and also during HTML parsing. It is important to note that with defer, scripts are only executed after the HTML document
+is fully parsed. Scripts with async are also downlaoded asynchronously with HTML parsing but for execution, once the script is downloaded
+and HTML parsing is paused, then the script gets executed. Without either of these two elements, the script is attempting to
+modify the body before the body is even created- hence the timing issue. This occurs if the script is placed in the head, but can be avoided if the script is placed within the body.
+For this exercise, I've utilized the defer attribute and placed the script within the head to modify the content without the timing issue.*/
+if (typeof document !== "undefined") { //condition to prevent document referene errors while preserving functionality in the browser
+    var h1 = document.createElement('h1');
+    h1.textContent = "Interactive Layer Loaded";
+    document.body.appendChild(h1);
+}
+console.log("Excercise 20 Output: Kindly view index.html, script is run within the head but does not encounter errors because of use of 'defer' attribute.");
